@@ -1,0 +1,55 @@
+# Templates for the GraphRAG evaluation set. References are computed by EXECUTING `answer.cypher` on the graph
+# (so every reference answer is verified against the data); placeholders are sampled from the graph with `sample.cypher`.
+per_template: 6
+seed: 42
+templates:
+  - id: lookup_outcome
+    type: lookup
+    variants: ["What was the outcome of call {call_id}?", "How did call {call_id} end?"]
+    sample: {cypher: "MATCH (c:Call)-[:ENDED_WITH]->(:Outcome) RETURN c.call_id AS call_id"}
+    answer: {cypher: "MATCH (c:Call {call_id: $call_id})-[:ENDED_WITH]->(o:Outcome) RETURN o.type AS outcome", keys: [outcome]}
+  - id: lookup_issue
+    type: lookup
+    variants: ["What was the customer's issue in call {call_id}?", "What did the customer in call {call_id} complain about?"]
+    sample: {cypher: "MATCH (c:Call)-[:HAS_ISSUE]->(:Issue) RETURN c.call_id AS call_id"}
+    answer: {cypher: "MATCH (c:Call {call_id: $call_id})-[:HAS_ISSUE]->(i:Issue) RETURN i.name AS issue", keys: [issue]}
+  - id: lookup_intent
+    type: lookup
+    variants: ["What call reason was detected for call {call_id}?", "Which intent does call {call_id} have?"]
+    sample: {cypher: "MATCH (c:Call)-[:HAS_INTENT]->(:Intent) RETURN c.call_id AS call_id"}
+    answer: {cypher: "MATCH (c:Call {call_id: $call_id})-[:HAS_INTENT]->(i:Intent) RETURN i.name AS intent", keys: [intent]}
+  - id: multihop_resolution_actions
+    type: multi_hop
+    variants: ["Which agent actions were taken in resolved calls about '{issue}'?", "How was '{issue}' usually resolved?"]
+    sample: {cypher: "MATCH (c:Call)-[:HAS_ISSUE]->(i:Issue), (c)-[:ENDED_WITH]->(:Outcome {type: 'resolved'}), (c)-[:TOOK_ACTION]->(:Action) RETURN DISTINCT i.name AS issue"}
+    answer: {cypher: "MATCH (i:Issue {name: $issue})<-[:HAS_ISSUE]-(c:Call)-[:TOOK_ACTION]->(a:Action), (c)-[:ENDED_WITH]->(:Outcome {type: 'resolved'}) RETURN a.name AS action, count(DISTINCT c) AS times ORDER BY times DESC LIMIT 5", keys: [action]}
+  - id: multihop_emotion_shift_actions
+    type: multi_hop
+    variants: ["Which agent actions occurred in calls where the customer started {start} and ended {end}?"]
+    sample: {cypher: "MATCH (c:Call)-[:STARTED_WITH]->(s:Emotion), (c)-[:ENDED_IN]->(e:Emotion), (c)-[:TOOK_ACTION]->(:Action) WHERE s.name <> e.name RETURN DISTINCT s.name AS start, e.name AS end"}
+    answer: {cypher: "MATCH (c:Call)-[:STARTED_WITH]->(:Emotion {name: $start}), (c)-[:ENDED_IN]->(:Emotion {name: $end}), (c)-[:TOOK_ACTION]->(a:Action) RETURN a.name AS action, count(DISTINCT c) AS calls ORDER BY calls DESC LIMIT 5", keys: [action]}
+  - id: multihop_failed_rubric
+    type: multi_hop
+    variants: ["List calls about {intent} where the agent failed the '{rubric_item}' check."]
+    sample: {cypher: "MATCH (c:Call)-[:HAS_INTENT]->(i:Intent), (c)-[:HAS_CHECK]->(k:ComplianceCheck {passed: false}) RETURN DISTINCT i.name AS intent, k.rubric_item AS rubric_item"}
+    answer: {cypher: "MATCH (c:Call)-[:HAS_INTENT]->(:Intent {name: $intent}), (c)-[:HAS_CHECK]->(:ComplianceCheck {rubric_item: $rubric_item, passed: false}) RETURN c.call_id AS call_id LIMIT 10", keys: [call_id]}
+  - id: agg_top_intents
+    type: aggregation
+    variants: ["What are the top {n} reasons customers called?"]
+    fixed: [{n: 3}, {n: 5}]
+    answer: {cypher: "MATCH (c:Call)-[:HAS_INTENT]->(i:Intent) RETURN i.name AS intent, count(c) AS calls ORDER BY calls DESC LIMIT $n", keys: [intent]}
+  - id: agg_issues_by_escalation
+    type: aggregation
+    variants: ["What are the top {n} issues by number of {outcome} calls?"]
+    fixed: [{n: 3, outcome: escalated}, {n: 3, outcome: unresolved}, {n: 5, outcome: resolved}]
+    answer: {cypher: "MATCH (c:Call)-[:HAS_ISSUE]->(i:Issue), (c)-[:ENDED_WITH]->(:Outcome {type: $outcome}) RETURN i.name AS issue, count(c) AS calls ORDER BY calls DESC LIMIT $n", keys: [issue]}
+  - id: agg_count_outcome
+    type: aggregation
+    variants: ["How many calls ended as {outcome}?"]
+    fixed: [{outcome: resolved}, {outcome: escalated}, {outcome: unresolved}]
+    answer: {cypher: "MATCH (c:Call)-[:ENDED_WITH]->(:Outcome {type: $outcome}) RETURN count(c) AS calls", keys: [calls]}
+  - id: agg_ends_angry
+    type: aggregation
+    variants: ["Which issues most often end with an angry customer?"]
+    fixed: [{}]
+    answer: {cypher: "MATCH (c:Call)-[:HAS_ISSUE]->(i:Issue), (c)-[:ENDED_IN]->(:Emotion {name: 'angry_frustrated'}) RETURN i.name AS issue, count(c) AS calls ORDER BY calls DESC LIMIT 5", keys: [issue]}

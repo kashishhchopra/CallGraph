@@ -1,0 +1,30 @@
+nodes:
+  Call: {key: call_id, properties: [call_id, dataset, duration_s, date, language, wait_time_s, frustration_score, compliance_score, summary]}
+  Speaker: {key: speaker_id, properties: [speaker_id, role]}
+  Turn: {key: turn_id, properties: [turn_id, index, start, end, text, emotion, emotion_conf]}
+  Intent: {key: name, properties: [name]}
+  Issue: {key: name, properties: [name, description, embedding]}
+  Product: {key: name, properties: [name]}
+  Action: {key: name, properties: [name]}
+  Outcome: {key: type, properties: [type]}
+  Emotion: {key: name, properties: [name]}
+  ComplianceCheck: {key: check_id, properties: [check_id, rubric_item, passed, evidence]}
+relationships:
+  HAS_PARTICIPANT: {from: Call, to: Speaker, properties: []}
+  HAS_TURN: {from: Call, to: Turn, properties: []}
+  SPOKEN_BY: {from: Turn, to: Speaker, properties: []}
+  NEXT: {from: Turn, to: Turn, properties: [gap_s, interrupted]}
+  HAS_INTENT: {from: Call, to: Intent, properties: [confidence, detected_at_s]}
+  HAS_ISSUE: {from: Call, to: Issue, properties: []}
+  ABOUT: {from: Issue, to: Product, properties: []}
+  TOOK_ACTION: {from: Call, to: Action, properties: [order, timestamp]}
+  RESOLVED_BY: {from: Issue, to: Action, properties: [count]}
+  ENDED_WITH: {from: Call, to: Outcome, properties: []}
+  STARTED_WITH: {from: Call, to: Emotion, properties: [intensity]}
+  ENDED_IN: {from: Call, to: Emotion, properties: [intensity]}
+  HAS_CHECK: {from: Call, to: ComplianceCheck, properties: []}
+vector:
+  node: Issue
+  property: embedding
+  dimension: 384
+  similarity: cosine

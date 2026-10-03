@@ -1,0 +1,64 @@
+asr:
+  model_size: base
+  candidate_sizes: [tiny, base, small]
+diarization:
+  pipeline: pyannote/speaker-diarization-3.1
+  tuned_params: {}
+intent:
+  backbone: distilbert-base-uncased
+  baseline: tfidf_logreg
+  learning_rate: 5.0e-5
+  epochs: 2
+  batch_size: 16
+  max_length: 128
+  seed: 42
+  output_dir: models/intent
+  max_train_samples: 6000
+  prefix_turns: [1, 2, 4]    # training examples built from the first k customer turns (+ full)
+  device: cpu               # MPS thrashes on this 8 GB machine
+emotion_audio:
+  backbone: facebook/wav2vec2-base
+  mode: frozen_encoder_head   # full fine-tuning did not converge on CPU (see README); embeddings + trained head instead
+  layer: 8                    # hidden layer used for mean-pooled embeddings
+  head: {C: 1.0, max_iter: 2000}
+  batch_size: 8
+  max_audio_s: 4.0
+  seed: 42
+  output_dir: models/emotion_audio
+  telephone_aug: true         # add an 8 kHz-simulated copy of every training clip
+  device: cpu
+  max_train_samples: 0
+emotion_text:
+  device: cpu
+  max_train_samples: 6000
+  backbone: distilroberta-base
+  learning_rate: 3.0e-5
+  epochs: 2
+  batch_size: 16
+  max_length: 64
+  seed: 42
+  output_dir: models/emotion_text
+summarization:
+  backend: llm              # seq2seq | llm
+  seq2seq_backbone: facebook/bart-base
+  learning_rate: 5.0e-5
+  epochs: 1
+  batch_size: 4
+  max_input_length: 512
+  max_target_length: 96
+  seed: 42
+  output_dir: models/summarization
+  max_train_samples: 2000
+  bertscore_model: distilbert-base-uncased
+  bertscore_layer: 5
+  bertscore_max_length: 256
+  min_sentences: 3
+  max_sentences: 5
+  num_beams: 2
+  device: cpu
+extraction:
+  max_retries: 3
+  outcomes: [resolved, escalated, unresolved]
+  default_outcome: unresolved
+embedding:
+  model: sentence-transformers/all-MiniLM-L6-v2

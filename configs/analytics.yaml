@@ -1,0 +1,22 @@
+# Analytics metrics served by GET /analytics/{metric}. Cypher is parameterised; params come from `params`.
+metrics:
+  intent_distribution:
+    cypher: "MATCH (c:Call)-[:HAS_INTENT]->(i:Intent) RETURN i.name AS label, count(c) AS value ORDER BY value DESC"
+  emotion_by_intent:
+    cypher: "MATCH (c:Call)-[:HAS_INTENT]->(i:Intent), (c)-[:ENDED_IN]->(e:Emotion) RETURN i.name AS label, e.name AS series, count(c) AS value ORDER BY label"
+  frustration_by_issue:
+    cypher: "MATCH (c:Call)-[:HAS_ISSUE]->(i:Issue) WHERE c.frustration_score IS NOT NULL RETURN i.name AS label, avg(c.frustration_score) AS value ORDER BY value DESC LIMIT $limit"
+    params: {limit: 15}
+  talk_ratio_vs_outcome:
+    cypher: "MATCH (c:Call)-[:HAS_TURN]->(t:Turn)-[:SPOKEN_BY]->(s:Speaker), (c)-[:ENDED_WITH]->(o:Outcome) WITH c, o, sum(CASE WHEN s.role = $agent_role THEN t.end - t.start ELSE 0 END) AS agent_s, sum(t.end - t.start) AS total_s WHERE total_s > 0 RETURN o.type AS label, avg(agent_s / total_s) AS value"
+    params: {agent_role: agent}
+  compliance_pass_rates:
+    cypher: "MATCH (:Call)-[:HAS_CHECK]->(k:ComplianceCheck) RETURN k.rubric_item AS label, avg(CASE WHEN k.passed THEN 1.0 ELSE 0.0 END) AS value"
+  dynamics:
+    source: results
+    features: [interruptions, long_silences, dead_air_total_s, agent_wpm, customer_wpm]
+subgraph:
+  cypher: "MATCH (i:Issue)<-[:HAS_ISSUE]-(c:Call)-[:TOOK_ACTION]->(a:Action), (c)-[:ENDED_WITH]->(o:Outcome) WHERE ($issue IS NULL OR i.name = $issue) AND ($outcome IS NULL OR o.type = $outcome) RETURN i.name AS issue, a.name AS action, o.type AS outcome, count(DISTINCT c) AS n ORDER BY n DESC LIMIT $limit"
+  default_limit: 40
+  calls_cypher: "MATCH (c:Call)-[:HAS_ISSUE]->(:Issue {name: $issue}) RETURN c.call_id AS call_id LIMIT $limit"
+  calls_limit: 12

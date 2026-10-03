@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "callgraph"
+version = "0.1.0"
+description = "Multi-purpose call-center intelligence platform (speech -> NLP -> knowledge graph -> GraphRAG)"
+requires-python = ">=3.10"
+dependencies = [
+  "pydantic>=2.6", "pydantic-settings>=2.2", "pyyaml", "jinja2", "loguru", "python-dotenv",
+  "numpy", "pandas", "scikit-learn", "matplotlib", "httpx", "requests", "tqdm",
+  "torch", "torchaudio", "transformers", "datasets", "accelerate", "peft", "sentence-transformers",
+  "librosa", "soundfile", "pydub", "faster-whisper", "jiwer", "pyannote.audio", "pyannote.metrics",
+  "evaluate", "rouge-score", "bert-score", "nltk", "faiss-cpu",
+  "falkordb", "fastapi", "uvicorn[standard]", "python-multipart",
+  "streamlit", "plotly", "pyvis", "streamlit-agraph",
+  "presidio-analyzer", "presidio-anonymizer", "spacy", "mlflow",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "ruff", "black", "pytest-asyncio"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "api", "eval", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "PLR2004"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["PLR2004"]
+"api/**" = ["B008"]  # FastAPI dependency-style defaults (File(...), Query(...))
+
+[tool.ruff.lint.pylint]
+allow-magic-value-types = ["str", "bytes"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]

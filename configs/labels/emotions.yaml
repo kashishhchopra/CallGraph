@@ -1,0 +1,5 @@
+shared_labels: [angry_frustrated, sad, neutral, happy, other]
+datasets:
+  crema_d: {anger: angry_frustrated, disgust: other, fear: other, happy: happy, neutral: neutral, sad: sad}
+  ravdess: {neutral: neutral, calm: neutral, happy: happy, sad: sad, angry: angry_frustrated, fearful: other, disgust: other, surprised: other}
+  meld: {anger: angry_frustrated, disgust: other, fear: other, joy: happy, neutral: neutral, sadness: sad, surprise: other}

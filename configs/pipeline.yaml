@@ -1,0 +1,49 @@
+audio:
+  target_sample_rate: 16000
+  telephone_sample_rate: 8000
+  mono: true
+  normalize_loudness: true
+  target_dbfs: -20.0
+  trim_silence_min_s: 2.0
+  silence_threshold_db: -45.0
+  keep_silence_s: 0.5
+  frame_s: 0.02
+  trim_for_asr: false       # trimming shifts timestamps; keep false so turn times map to the source audio
+  audio_extensions: [".wav", ".mp3", ".flac", ".m4a", ".ogg"]
+asr:
+  device: cpu
+  compute_type: int8
+  beam_size: 1
+  vad_filter: true
+  expected_language: en
+  language_detection_min_prob: 0.5
+  word_timestamps: true
+  min_prob_floor: 0.0
+diarization:
+  backend: auto             # auto | pyannote | channel | mfcc
+  min_speakers: 2
+  max_speakers: 2
+  dual_channel_roles: [agent, customer]
+  channel_energy_margin_db: 6.0
+  channel_max_corr: 0.5      # stereo is treated as one-speaker-per-channel only if channels are this uncorrelated
+  channel_frame_s: 0.05
+  mfcc_n: 20
+  mfcc_window_s: 1.0
+  min_segment_s: 0.3
+  error_trunc_chars: 120
+alignment:
+  turn_merge_gap_s: 1.0
+  min_turn_words: 1
+roles:
+  first_speaker_role: agent
+  llm_check_enabled: true
+  greeting_window_turns: 16
+modules:
+  # order and enable flags; names must exist in the module registry
+  intent: {enabled: true}
+  emotion: {enabled: true}
+  dynamics: {enabled: true, skip_for_text: [dynamics]}
+  compliance: {enabled: true}
+  summary: {enabled: true}
+  extraction: {enabled: true}
+parallel_workers: 1

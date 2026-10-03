@@ -1,0 +1,33 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/raw/
+data/processed/
+data/cache/
+models/
+outputs/
+mlruns/
+*.pt
+*.safetensors
+*.wav
+*.mp3
+*.flac
+.pytest_cache/
+.ruff_cache/
+
+# --- licence / privacy: never publish third-party data derivatives (see README "Licences and data handling") ---
+# UniData (CC BY-NC-ND) and anything derived from its transcripts or summaries
+data/manifests/unidata.csv
+data/labels/real_call_*.json
+data/labels/extraction_check.json
+data/labels/graphrag_questions.json
+# manifests that embed copies of dataset text (regenerate with `make manifests`)
+data/manifests/dialogsum.csv
+data/manifests/tweetsumm.csv
+data/manifests/meld.csv
+# local tooling / caches
+.DS_Store
+.venv/
+*.part
+frontend/vendor/*.map

@@ -1,0 +1,9 @@
+Below is a customer-service dialogue and the list of procedural steps the agent is supposed to perform.
+
+Dialogue:
+{{ transcript }}
+
+Required steps: {{ actions | join(', ') }}
+
+Decide for each required step whether the agent actually carried it out (or asked for what is needed to carry it out) in this dialogue.
+Return ONLY JSON: {"performed": {"<step>": true|false}}

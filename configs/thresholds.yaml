@@ -1,0 +1,37 @@
+dynamics:
+  interruption_overlap_s: 0.5
+  long_silence_s: 3.0
+  hold_period_s: 10.0
+  flags:
+    agent_dominated: {metric: agent_talk_ratio, op: ">", value: 0.65}
+    frequent_interruptions: {metric: interruptions, op: ">=", value: 3}
+    long_dead_air: {metric: dead_air_total_s, op: ">", value: 30.0}
+normalization:
+  similarity_threshold: 0.80
+intent:
+  secondary_threshold: 0.20
+  top_k: 3
+emotion:
+  negative_labels: [angry_frustrated, sad]
+  intensity_source: max_probability
+  shift_margin: 0.15
+  frustration_weights:
+    peak_anger: 50.0
+    negative_duration_ratio: 30.0
+    escalation_words: 20.0
+  escalation_words: [supervisor, manager, ridiculous, unacceptable, terrible, worst, cancel, furious, complaint, "never again"]
+  escalation_words_cap: 3
+  positive_labels: [happy]
+  anger_label: angry_frustrated
+  neutral_label: neutral
+fusion:
+  weight_grid_step: 0.1
+  untuned_default: {audio_weight: 0.5, text_weight: 0.5}   # only used before tuning has produced the artifact
+  artifact: models/emotion/fusion.json   # written by the tuning step on MELD validation
+  audio_weight: null      # filled by tuning (artifact), not typed in
+  text_weight: null
+compliance:
+  max_retries: 3
+  score_scale: 5
+role_check:
+  min_confidence: 0.5

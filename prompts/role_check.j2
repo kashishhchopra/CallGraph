@@ -1,0 +1,8 @@
+You are classifying the speakers of a customer-service call. Below are the first turns of the call, each tagged with an anonymous speaker id.
+
+{% for t in turns %}
+[{{ t.speaker }}] {{ t.text }}
+{% endfor %}
+
+Which speaker id is the customer-service AGENT (the person who greets with the company name, offers help, or asks verification questions)? The other speaker is the CUSTOMER.
+Reply with JSON only: {"agent_speaker": "<speaker id>", "confidence": <number between 0 and 1>}

@@ -1,0 +1,346 @@
+datasets:
+  spokenwoz:
+    type: audio_dialogue
+    source_url: https://spokenwoz.github.io/SpokenWOZ-github.io/
+    license: CC BY-NC 4.0
+    access_notes: GitHub/HF; large, subset only
+    local_path: data/raw/spokenwoz
+    splits:
+    - train
+    - dev
+    - test
+    subset_size: 200
+    labels_used:
+    - transcripts
+    - domains
+    used_by_modules:
+    - asr
+    - diarization
+    - intent
+    - graph
+    commercial_use_allowed: false
+    source:
+      text_repo: ssz1111/SpokenWOZ-Test-Text
+      audio_repo: ssz1111/SpokenWOZ-Test-Audio
+      text_file: data.json
+      list_file: testListFile.json
+      audio_ext: .wav
+      audio_gb_per_dialogue: 0.008
+    expected_gb: 0.1
+  ami:
+    type: meeting_audio
+    source_url: https://groups.inf.ed.ac.uk/ami/corpus/
+    license: CC BY 4.0
+    access_notes: HF edinburghcstr/ami (ihm/sdm configs)
+    local_path: data/raw/ami
+    splits:
+    - train
+    - validation
+    - test
+    subset_size: 5
+    labels_used:
+    - transcripts
+    - word_timings
+    - segments
+    - summaries
+    used_by_modules:
+    - diarization
+    - dynamics
+    - summarization
+    commercial_use_allowed: true
+    expected_gb: 0.5
+    source:
+      audio_url: https://groups.inf.ed.ac.uk/ami/AMICorpusMirror/amicorpus/{m}/audio/{m}.Mix-Headset.wav
+      rttm_url: https://raw.githubusercontent.com/pyannote/AMI-diarization-setup/main/only_words/rttms/test/{m}.rttm
+      annotations_url: https://groups.inf.ed.ac.uk/ami/AMICorpusAnnotations/ami_public_manual_1.6.2.zip
+      meetings:
+      - ES2004a
+      - IS1009a
+      - EN2002a
+      - TS3003a
+      - ES2004b
+      - IS1009b
+      - EN2002b
+      - TS3003b
+      words_glob: words/{m}.*.words.xml
+      summary_path: abstractive/{m}.abssumm.xml
+      turn_gap_s: 1.0
+  earnings22:
+    type: asr
+    source_url: https://huggingface.co/datasets/distil-whisper/earnings22
+    license: CC BY-SA 4.0
+    access_notes: Hugging Face
+    local_path: data/raw/earnings22
+    splits:
+    - test
+    subset_size: 10
+    labels_used:
+    - transcripts
+    used_by_modules:
+    - asr
+    commercial_use_allowed: true
+    expected_gb: 1.0
+    source:
+      repo: distil-whisper/earnings22
+      shard: chunked/test-00000-of-00038-6f4f182bdbb6f186.parquet
+      audio_col: audio
+      text_col: transcription
+  voxconverse:
+    type: diarization
+    source_url: https://github.com/joonson/voxconverse
+    license: CC BY 4.0
+    access_notes: GitHub RTTM + audio
+    local_path: data/raw/voxconverse
+    splits:
+    - dev
+    - test
+    subset_size: 5
+    labels_used:
+    - rttm
+    used_by_modules:
+    - diarization
+    commercial_use_allowed: true
+    expected_gb: 0.5
+    source:
+      zip_url: https://www.robots.ox.ac.uk/~vgg/data/voxconverse/data/voxconverse_{split}_wav.zip
+      rttm_api: https://api.github.com/repos/joonson/voxconverse/contents/{split}
+      rttm_raw: https://raw.githubusercontent.com/joonson/voxconverse/master/{split}/{name}
+      split: test
+      zip_prefix: voxconverse_{split}_wav/
+      max_file_mb: 25
+  callhome:
+    type: telephone
+    source_url: https://ca.talkbank.org/access/CallHome/eng.html
+    license: Research use (TalkBank)
+    access_notes: Manual registration required; script prints instructions
+    local_path: data/raw/callhome
+    splits:
+    - test
+    subset_size: 5
+    labels_used:
+    - transcripts
+    - speakers
+    used_by_modules:
+    - diarization
+    - asr
+    commercial_use_allowed: false
+    expected_gb: 0.1
+    source:
+      instructions: Register at https://talkbank.org, accept the CallHome English terms at https://ca.talkbank.org/access/CallHome/eng.html, download the media (.mp3/.wav)
+        and CHAT transcripts (.cha), and place them in the local_path folder (audio/ and cha/ sub-folders).
+      audio_dir: audio
+      cha_dir: cha
+  abcd:
+    type: text_dialogue
+    source_url: https://github.com/asappresearch/abcd
+    license: MIT
+    access_notes: GitHub
+    local_path: data/raw/abcd
+    splits:
+    - train
+    - dev
+    - test
+    subset_size: 1000
+    labels_used:
+    - intents
+    - actions
+    - guidelines
+    used_by_modules:
+    - intent
+    - compliance
+    - graph
+    commercial_use_allowed: true
+    source:
+      base_url: https://raw.githubusercontent.com/asappresearch/abcd/master/data
+      files:
+      - abcd_v1.1.json.gz
+      - guidelines.json
+      - ontology.json
+      - utterances.json
+      - kb.json
+      main_file: abcd_v1.1.json.gz
+      guidelines_file: guidelines.json
+    expected_gb: 0.1
+  banking77:
+    type: text_intent
+    source_url: https://huggingface.co/datasets/PolyAI/banking77
+    license: CC BY 4.0
+    access_notes: Hugging Face
+    local_path: data/raw/banking77
+    splits:
+    - train
+    - test
+    subset_size: 3000
+    labels_used:
+    - intents
+    used_by_modules:
+    - intent
+    commercial_use_allowed: true
+    source:
+      base_url: https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/master/banking_data
+      files:
+      - train.csv
+      - test.csv
+      - categories.json
+    expected_gb: 0.1
+  crema_d:
+    type: speech_emotion
+    source_url: https://github.com/CheyneyComputerScience/CREMA-D
+    license: ODbL
+    access_notes: GitHub / HF mirror
+    local_path: data/raw/crema_d
+    splits:
+    - train
+    - validation
+    - test
+    subset_size: 1500
+    labels_used:
+    - emotion
+    used_by_modules:
+    - emotion
+    commercial_use_allowed: true
+    source:
+      repo: confit/cremad-parquet
+      shards:
+      - data/train-00000-of-00001.parquet
+      - data/validation-00000-of-00001.parquet
+      - data/test-00000-of-00001.parquet
+      actor_regex: ^(\d{4})_
+      expected_gb: 1.5
+    expected_gb: 0.1
+  ravdess:
+    type: speech_emotion
+    source_url: https://zenodo.org/records/1188976
+    license: CC BY-NC-SA 4.0
+    access_notes: Zenodo (Audio_Speech_Actors_01-24.zip ~215 MB)
+    local_path: data/raw/ravdess
+    splits:
+    - train
+    - validation
+    - test
+    subset_size: 1440
+    labels_used:
+    - emotion
+    used_by_modules:
+    - emotion
+    commercial_use_allowed: false
+    source:
+      repo: confit/ravdess-parquet
+      shards:
+      - fold1/train-00000-of-00002.parquet
+      - fold1/train-00001-of-00002.parquet
+      - fold1/test-00000-of-00001.parquet
+      actor_regex: -(\d{2})$
+      speech_vocal_channel: '01'
+      expected_gb: 1.5
+    expected_gb: 0.1
+  meld:
+    type: multimodal_emotion
+    source_url: https://github.com/declare-lab/MELD
+    license: GPL-3.0
+    access_notes: Text via HF; audio is very large
+    local_path: data/raw/meld
+    splits:
+    - train
+    - validation
+    - test
+    subset_size: 3000
+    labels_used:
+    - emotion
+    - sentiment
+    used_by_modules:
+    - emotion
+    commercial_use_allowed: false
+    source:
+      audio_repo: ajyy/MELD_audio
+      csv_url_template: https://raw.githubusercontent.com/declare-lab/MELD/master/data/MELD/{name}_sent_emo.csv
+      archives:
+        train: archive/train.tar.gz
+        validation: archive/dev.tar.gz
+        test: archive/test.tar.gz
+      csv_names:
+        train: train
+        validation: dev
+        test: test
+      expected_gb: 2.0
+    expected_gb: 0.1
+  dialogsum:
+    type: text_summarization
+    source_url: https://huggingface.co/datasets/knkarthick/dialogsum
+    license: CC BY-NC-SA 4.0
+    access_notes: Hugging Face
+    local_path: data/raw/dialogsum
+    splits:
+    - train
+    - validation
+    - test
+    subset_size: 2000
+    labels_used:
+    - summary
+    used_by_modules:
+    - summarization
+    commercial_use_allowed: false
+    source:
+      url_template: https://huggingface.co/datasets/knkarthick/dialogsum/resolve/main/{split}.csv
+    expected_gb: 0.05
+  tweetsumm:
+    type: text_summarization
+    source_url: https://github.com/guyfe/Tweetsumm
+    license: Research use
+    access_notes: Official release needs Kaggle twcs.csv; text from community mirror HF Andyrasika/TweetSumm-tuned (110 test dialogues)
+    local_path: data/raw/tweetsumm
+    splits:
+    - test
+    subset_size: 100
+    labels_used:
+    - summary
+    used_by_modules:
+    - summarization
+    commercial_use_allowed: false
+    source:
+      repo: Andyrasika/TweetSumm-tuned
+      files:
+        test: data/test-00000-of-00001-4b19574d8fc3e03a.parquet
+        train: data/train-00000-of-00001-cf5872afd4ce2e86.parquet
+        validation: data/validation-00000-of-00001-a80b0e36d2544222.parquet
+    expected_gb: 0.1
+  unidata:
+    type: real_calls
+    source_url: https://huggingface.co/datasets/UniDataPro/call-center-audio
+    license: CC BY-NC-ND 4.0
+    access_notes: Hugging Face; never redistribute files or derivatives
+    local_path: data/raw/unidata
+    splits:
+    - test
+    subset_size: 0
+    labels_used:
+    - transcript
+    - category
+    - wait_time
+    - ai_summary
+    used_by_modules:
+    - all
+    commercial_use_allowed: false
+    source:
+      repo: UniDataPro/call-center-audio
+      files_prefix: files/
+      metadata_file: files/metainfo.csv
+      csv_delimiter: ;
+    expected_gb: 0.1
+  axondata:
+    type: real_calls
+    source_url: https://huggingface.co/AxonData
+    license: CC BY-NC 4.0
+    access_notes: Hugging Face
+    local_path: data/raw/axondata
+    splits:
+    - test
+    subset_size: 0
+    labels_used:
+    - domain
+    used_by_modules:
+    - all
+    commercial_use_allowed: false
+    expected_gb: 0.1
+    source:
+      repo: AxonData/multilingual-call-center-speech-dataset

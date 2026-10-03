@@ -1,0 +1,107 @@
+run_id_prefix: eval
+subsets:
+  asr: {spokenwoz: 20, earnings22: 10, ami: 5}
+  diarization: {ami: 3, voxconverse: 3, callhome: 5, spokenwoz: 5}
+  intent: {abcd_test: 1000, spokenwoz: 200}
+  summarization: {dialogsum: 100, tweetsumm: 100, ami: 10}
+  rag_questions: 60
+intent_cutoffs_s: [10, 30, 60]
+experiments:
+  whisper_size_vs_wer: true
+  sample_rate_16k_vs_8k: true
+  early_intent_curve: true
+  emotion_ablation: true
+  domain_gap: true
+  dynamics_vs_outcome: true
+  rag_comparison: true
+rag:
+  latency_questions: 12
+  strategies: [vector, graph, hybrid]
+  question_types: [lookup, multi_hop, aggregation]
+  judge: llm
+silver_labels:
+  disclaimer: "LLM-annotated silver labels, not human gold labels"
+  real_datasets: [unidata, axondata]
+  extraction_datasets: [spokenwoz, unidata, axondata]
+  extraction_fields: [issue_type, product, agent_actions, resolution, outcome, follow_ups]
+  max_chars: 3000
+  turn_window: 20
+  english_only: true      # silver annotators are English-centric LLMs; non-English calls are excluded
+  tiebreak_context_turns: 3
+  annotator_models: [llama3.2:3b, llama3.2:1b]
+  tiebreak_model: llama3.2:3b
+  real_call_emotion_min_calls: 20
+excerpt_s: {ami: 300, voxconverse: 300, spokenwoz: 180}
+asr:
+  sizes: [tiny, base, small]
+  speed_subset: 3
+  telephone_experiment_dataset: earnings22
+der:
+  collar_s: 0.25
+  skip_overlap: false
+dynamics:
+  overlap_min_s: 0.0
+  match_tolerance_s: 0.5
+  energy_frame_s: 0.05
+  energy_margin_db: 6.0
+  energy_floor_db: -45.0
+roles:
+  subset: 50
+extraction:
+  check_calls: 50
+compliance:
+  abcd_subset: 100
+plots: {dpi: 120}
+intent:
+  curve_cutoffs_s: [5, 10, 20, 30, 45, 60, 90, 120, 180]
+  confusion_dataset: abcd
+emotion:
+  batch_size: 8
+  max_clips: {crema_d: 300, ravdess: 300, meld: 600}
+summarization:
+  human_sheet_n: 30
+  ami_max_chars: 6000
+  bertscore_lang: en
+  systems: [lead3, llm, seq2seq]
+  lead_k_turns: 3
+real_world:
+  case_studies: 4
+  strip_pattern: "\\[[^\\]]*\\]"
+  bertscore_lang: en
+process_subset: {spokenwoz: 40}
+runners: [asr, diarization, roles, intent, intent_audio, emotion, dynamics, compliance, summarization, extraction, real_world, rag]
+report:
+  title: "CallGraph evaluation report"
+  float_format: "%.3f"
+  sections:
+    - {file: asr_wer, title: "ASR - WER by dataset and Whisper size"}
+    - {file: exp2_sample_rate_wer, title: "Experiment 2a - 16 kHz vs 8 kHz (WER)"}
+    - {file: diarization_der, title: "Diarization - DER"}
+    - {file: role_assignment, title: "Role assignment"}
+    - {file: intent_metrics, title: "Intent detection"}
+    - {file: intent_from_audio, title: "Intent from audio (Whisper ASR) vs gold transcripts"}
+    - {file: exp3_early_intent_curve, title: "Experiment 3 - early intent accuracy vs time"}
+    - {file: emotion_f1, title: "Emotion - weighted F1 (all variants)"}
+    - {file: exp4_emotion_ablation, title: "Experiment 4 - emotion ablation (MELD test)"}
+    - {file: dynamics_ami, title: "Dynamics - overlap / interruption detection vs AMI"}
+    - {file: compliance, title: "Compliance audit"}
+    - {file: summarization, title: "Summarization"}
+    - {file: extraction_precision, title: "Entity extraction - field precision (silver check)"}
+    - {file: real_world, title: "Real-world protocol (UniData / AxonData)"}
+    - {file: exp5_domain_gap, title: "Experiment 5 - domain gap"}
+    - {file: exp6_dynamics_vs_outcome, title: "Experiment 6 - dynamics vs outcome"}
+    - {file: rag_latency, title: "RAG latency (uncached LLM, small sample)"}
+    - {file: exp7_rag_comparison, title: "Experiment 7 - Vector vs Graph vs Hybrid RAG"}
+  notes:
+    - "Real-call labels (emotion, compliance, intent, extraction) are LLM-annotated silver labels, not human gold labels. Annotator agreement (Cohen's kappa) is low (see data/labels/*.json), so treat real-call scores as indicative only."
+    - "The real-call set is small: 5 UniData calls and 11 AxonData calls (9 non-English); silver sets use the 7 English calls."
+    - "Subset sizes are stated per table. Several benchmarks use a handful of files (e.g. 3 AMI meetings, 3 VoxConverse files, 5 SpokenWOZ dialogues for DER) because the development machine has 8 GB RAM and no GPU."
+    - "Audio emotion model = frozen wav2vec2-base embeddings + class-balanced logistic-regression head (full fine-tuning did not converge on CPU), trained on CREMA-D + RAVDESS with 8 kHz telephone copies."
+    - "Intent on SpokenWOZ uses labels derived from the dialogue's first non-profile domain; this is a weak proxy for call reason, so the early-intent and intent-from-audio numbers are low for both gold and Whisper text. Public intent scores (ABCD, Banking77) are the primary result."
+    - "BERTScore is a re-implementation (greedy matching, DistilBERT layer from config, no idf, no baseline rescaling) because the bert_score package is incompatible with the installed transformers; values are not comparable to rescaled BERTScore."
+    - "RAGAS metrics are an LLM-judge implementation of the RAGAS definitions using the local 3B model, not the ragas library."
+    - "RAG per-question latencies in the comparison table include cached LLM responses from interrupted runs; use the uncached latency table for speed."
+    - "Real-time factors for the 8 kHz experiment are unreliable for the 16 kHz row (served from the ASR cache)."
+    - "Experiment 6: no processed call ends in a negative emotion, so correlation with ends_negative is undefined; frustration-score correlations are reported instead (small n)."
+    - "pyannote tuned parameters were not explored (none defined); CallHome was not run (requires manual TalkBank registration)."
+    - "GraphRAG questions are templated (43 questions); reference answers come from executed Cypher on the 56-call graph."

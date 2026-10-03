@@ -1,0 +1,55 @@
+Metadata-Version: 2.4
+Name: callgraph
+Version: 0.1.0
+Summary: Multi-purpose call-center intelligence platform (speech -> NLP -> knowledge graph -> GraphRAG)
+Requires-Python: >=3.10
+Requires-Dist: pydantic>=2.6
+Requires-Dist: pydantic-settings>=2.2
+Requires-Dist: pyyaml
+Requires-Dist: jinja2
+Requires-Dist: loguru
+Requires-Dist: python-dotenv
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Requires-Dist: httpx
+Requires-Dist: requests
+Requires-Dist: tqdm
+Requires-Dist: torch
+Requires-Dist: torchaudio
+Requires-Dist: transformers
+Requires-Dist: datasets
+Requires-Dist: accelerate
+Requires-Dist: peft
+Requires-Dist: sentence-transformers
+Requires-Dist: librosa
+Requires-Dist: soundfile
+Requires-Dist: pydub
+Requires-Dist: faster-whisper
+Requires-Dist: jiwer
+Requires-Dist: pyannote.audio
+Requires-Dist: pyannote.metrics
+Requires-Dist: evaluate
+Requires-Dist: rouge-score
+Requires-Dist: bert-score
+Requires-Dist: nltk
+Requires-Dist: faiss-cpu
+Requires-Dist: falkordb
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: python-multipart
+Requires-Dist: streamlit
+Requires-Dist: plotly
+Requires-Dist: pyvis
+Requires-Dist: streamlit-agraph
+Requires-Dist: presidio-analyzer
+Requires-Dist: presidio-anonymizer
+Requires-Dist: spacy
+Requires-Dist: mlflow
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: pytest-asyncio; extra == "dev"

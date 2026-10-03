@@ -1,0 +1,12 @@
+id,audio_path,transcript_path,duration_s,split,labels
+axon_1735404531.458927,data/raw/axondata/Call center data samples/1735404531.458927 (EN customer support )/1735404531.458927.mp3,,689.616,test,"{""language_hint"": ""EN"", ""domain"": ""customer support""}"
+axon_1735547939.459048,data/raw/axondata/Call center data samples/1735547939.459048 (RU Account manager Finance)/1735547939.459048.mp3,,583.344,test,"{""language_hint"": ""RU"", ""domain"": ""Account manager Finance""}"
+axon_1735556115.459244,data/raw/axondata/Call center data samples/1735556115.459244 (PL customer service)/1735556115.459244.mp3,,526.824,test,"{""language_hint"": ""PL"", ""domain"": ""customer service""}"
+axon_1735560973.459326,data/raw/axondata/Call center data samples/1735560973.459326 (PL Account-Billing)/1735560973.459326.mp3,,688.536,test,"{""language_hint"": ""PL"", ""domain"": ""Account-Billing""}"
+axon_2025-02-03 16_57_41_1738598261.49391,data/raw/axondata/Call center data samples/1738598108.49385 (FR Customer Support Call)/2025-02-03 16_57_41_1738598261.49391.mp3,,433.584,test,"{""language_hint"": ""FR"", ""domain"": ""Customer Support Call""}"
+axon_1738598261.49391,data/raw/axondata/Call center data samples/1738598261.49391 (FR Sale)/1738598261.49391.mp3,,433.584,test,"{""language_hint"": ""FR"", ""domain"": ""Sale""}"
+axon_1755884171.51632,data/raw/axondata/Call center data samples/1755884171.51632 (EN Support-Billing)/1755884171.51632.mp3,,836.208,test,"{""language_hint"": ""EN"", ""domain"": ""Support-Billing""}"
+axon_1756465406.16342,data/raw/axondata/Call center data samples/1756465406.16342 (RU Pharma Sale)/1756465406.16342.mp3,,310.968,test,"{""language_hint"": ""RU"", ""domain"": ""Pharma Sale""}"
+axon_1756469254.16578,data/raw/axondata/Call center data samples/1756469254.16578 (DE Sale)/1756469254.16578.mp3,,620.496,test,"{""language_hint"": ""DE"", ""domain"": ""Sale""}"
+axon_1757078926.92210,data/raw/axondata/Call center data samples/1757078926.92210 (ES Billing or Account Issue Call)/1757078926.92210.mp3,,670.752,test,"{""language_hint"": ""ES"", ""domain"": ""Billing or Account Issue Call""}"
+axon_1757338962.95612,data/raw/axondata/Call center data samples/1757338962.95612 (Portuguese Sale)/1757338962.95612.mp3,,550.368,test,"{""language_hint"": ""Portuguese"", ""domain"": ""Sale""}"

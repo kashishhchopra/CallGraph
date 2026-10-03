@@ -1,0 +1,7 @@
+Label the emotion of each CUSTOMER turn of this call. Allowed labels: {{ labels | join(', ') }}.
+
+{% for t in turns %}
+{{ t.index }}. [{{ t.role }}] {{ t.text }}
+{% endfor %}
+
+Return ONLY JSON: {"labels": [{"index": <turn index>, "emotion": "<label>"}]} covering every CUSTOMER turn.

@@ -1,0 +1,6 @@
+Pick the single best call reason for this customer-service call. Allowed labels: {{ labels | join(', ') }}.
+
+Customer turns:
+{{ customer_text }}
+
+Return ONLY JSON: {"intent": "<label>"}

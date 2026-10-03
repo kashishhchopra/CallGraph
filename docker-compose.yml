@@ -1,0 +1,30 @@
+services:
+  falkordb:
+    image: falkordb/falkordb:latest
+    ports: ["${FALKORDB__PORT:-6379}:6379", "${FALKORDB_BROWSER_PORT:-3000}:3000"]
+    volumes: ["falkordb_data:/var/lib/falkordb/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  api:
+    build: .
+    image: callgraph-app
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+    ports: ["${API__PORT:-8010}:8000"]
+    env_file: [.env]
+    environment:
+      FALKORDB__HOST: falkordb
+      FALKORDB__PORT: "6379"
+      LLM__BASE_URL: ${LLM__BASE_URL_DOCKER:-http://host.docker.internal:11434}
+    volumes: ["./data:/app/data", "./models:/app/models", "./outputs:/app/outputs", "${HF_CACHE_DIR:-~/.cache/huggingface}:/root/.cache/huggingface"]
+    depends_on: {falkordb: {condition: service_healthy}}
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ollama"]
+    ports: ["11434:11434"]
+    volumes: ["ollama_data:/root/.ollama"]
+volumes:
+  falkordb_data:
+  ollama_data:

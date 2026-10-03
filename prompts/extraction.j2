@@ -1,0 +1,16 @@
+You extract structured facts from a customer-service call transcript.
+
+Transcript (AGENT and CUSTOMER turns):
+{{ transcript }}
+
+Return ONLY a JSON object with exactly these keys:
+{
+  "issue_type": "<short noun phrase naming the customer's problem, e.g. 'cannot log in'>",
+  "product": "<product or service concerned, or null>",
+  "problem_description": "<one sentence>",
+  "agent_actions": ["<each concrete action the agent took, short verb phrase, in order>"],
+  "resolution": "<one sentence on how it ended>",
+  "outcome": "{{ outcomes | join('" | "') }}",
+  "follow_ups": ["<follow-up commitments, empty list if none>"]
+}
+Use only information in the transcript. Do not invent details.

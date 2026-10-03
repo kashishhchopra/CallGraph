@@ -1,0 +1,19 @@
+You audit a customer-service agent against a rubric.
+
+Detected customer intent: {{ intent }}
+Customer upset during call: {{ upset }}
+
+Rubric items:
+{% for item in rubric %}
+- {{ item.id }}: {{ item.description }}
+{% endfor %}
+
+Transcript (with [seconds] timestamps):
+{{ transcript }}
+{% if guidelines %}
+
+Company guideline for this flow (required actions): {{ guidelines }}
+{% endif %}
+
+For EVERY rubric item return whether the agent satisfied it, a short verbatim evidence quote from the transcript (empty if none), and the timestamp in seconds of that quote (null if none).
+Return ONLY JSON: {"items": [{"rubric_item": "<id>", "passed": true|false, "evidence": "<quote>", "timestamp": <number|null>}]}

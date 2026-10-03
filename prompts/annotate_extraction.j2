@@ -1,0 +1,10 @@
+You verify an automatic extraction against a call transcript.
+
+Transcript:
+{{ transcript }}
+
+Extracted fields:
+{{ fields | tojson }}
+
+For EACH field name, say whether the extracted value is supported by the transcript (true/false). A list field is true only if every item is supported.
+Return ONLY JSON: {"verdicts": {"<field>": true|false}}

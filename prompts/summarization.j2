@@ -1,0 +1,7 @@
+Summarize this customer-service call for a supervisor.
+
+Transcript:
+{{ transcript }}
+
+Return ONLY JSON with keys:
+{"issue": "<what the customer wanted>", "agent_actions": "<what the agent did>", "outcome": "<how the call ended>", "follow_up_needed": true|false, "summary": "<{{ min_sentences }}-{{ max_sentences }} sentence summary>"}

@@ -1,0 +1,11 @@
+Score the AGENT in this call on each rubric item (true = satisfied).
+
+Rubric:
+{% for item in rubric %}
+- {{ item.id }}: {{ item.description }}
+{% endfor %}
+
+Transcript:
+{{ transcript }}
+
+Return ONLY JSON: {"items": [{"rubric_item": "<id>", "passed": true|false}]}

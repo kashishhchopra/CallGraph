@@ -1,0 +1,11 @@
+id,audio_path,transcript_path,duration_s,split,labels
+earnings22_0,data/raw/earnings22/wav/earnings22_0.wav,data/processed/earnings22/transcripts/earnings22_0.json,2.079833333333333,test,{}
+earnings22_1,data/raw/earnings22/wav/earnings22_1.wav,data/processed/earnings22/transcripts/earnings22_1.json,9.659916666666666,test,{}
+earnings22_2,data/raw/earnings22/wav/earnings22_2.wav,data/processed/earnings22/transcripts/earnings22_2.json,7.340041666666667,test,{}
+earnings22_3,data/raw/earnings22/wav/earnings22_3.wav,data/processed/earnings22/transcripts/earnings22_3.json,1.08,test,{}
+earnings22_4,data/raw/earnings22/wav/earnings22_4.wav,data/processed/earnings22/transcripts/earnings22_4.json,2.9400416666666667,test,{}
+earnings22_5,data/raw/earnings22/wav/earnings22_5.wav,data/processed/earnings22/transcripts/earnings22_5.json,5.900041666666667,test,{}
+earnings22_6,data/raw/earnings22/wav/earnings22_6.wav,data/processed/earnings22/transcripts/earnings22_6.json,5.019833333333334,test,{}
+earnings22_7,data/raw/earnings22/wav/earnings22_7.wav,data/processed/earnings22/transcripts/earnings22_7.json,10.660041666666666,test,{}
+earnings22_8,data/raw/earnings22/wav/earnings22_8.wav,data/processed/earnings22/transcripts/earnings22_8.json,4.7400416666666665,test,{}
+earnings22_9,data/raw/earnings22/wav/earnings22_9.wav,data/processed/earnings22/transcripts/earnings22_9.json,7.580041666666666,test,{}

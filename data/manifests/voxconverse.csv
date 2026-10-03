@@ -1,0 +1,6 @@
+id,audio_path,transcript_path,duration_s,split,labels
+aepyx,data/raw/voxconverse/audio/aepyx.wav,,169.152,test,"{""rttm"": ""data/raw/voxconverse/rttm/aepyx.rttm""}"
+aggyz,data/raw/voxconverse/audio/aggyz.wav,,262.592,test,"{""rttm"": ""data/raw/voxconverse/rttm/aggyz.rttm""}"
+aiqwk,data/raw/voxconverse/audio/aiqwk.wav,,198.848,test,"{""rttm"": ""data/raw/voxconverse/rttm/aiqwk.rttm""}"
+auzru,data/raw/voxconverse/audio/auzru.wav,,515.904,test,"{""rttm"": ""data/raw/voxconverse/rttm/auzru.rttm""}"
+bjruf,data/raw/voxconverse/audio/bjruf.wav,,360.512,test,"{""rttm"": ""data/raw/voxconverse/rttm/bjruf.rttm""}"

@@ -1,0 +1,13 @@
+items:
+  - {id: greeting, description: "The agent opens with a proper greeting and identifies themselves or the company.", applies_when: always}
+  - {id: identity_verification, description: "The agent verifies the customer's identity before account-specific actions.", applies_when: always}
+  - {id: correct_resolution_step, description: "The agent takes the resolution step appropriate for the detected intent.", applies_when: always}
+  - {id: empathy, description: "The agent acknowledges the customer's frustration or concern when the customer is upset.", applies_when: customer_upset}
+  - {id: proper_closing, description: "The agent summarises, offers further help and closes politely.", applies_when: always}
+scoring: {pass_points: 1, scale: 5, na_evidence: "not applicable"}
+keyword_baseline:
+  greeting: [hello, hi, good morning, good afternoon, thank you for calling, welcome]
+  identity_verification: [verify, confirm your, date of birth, account number, full name, security question]
+  correct_resolution_step: [refund, reset, issued, processed, updated, cancelled, scheduled, escalate]
+  empathy: [sorry, apologize, understand, frustrating, i can imagine]
+  proper_closing: [anything else, have a great, thank you for calling, goodbye, have a nice]

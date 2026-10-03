@@ -1,0 +1,20 @@
+default_limit: 10
+max_cypher_retries: 2
+top_k_chunks: 5
+max_snippet_chars: 400
+max_rows_in_prompt: 25
+known_value_limit: 30
+forbidden_cypher: [CREATE, DELETE, SET, MERGE, REMOVE, DROP, CALL, LOAD]
+strategies: [vector, graph, hybrid]
+examples:
+  - question: "What are the top 3 reasons customers called?"
+    cypher: "MATCH (c:Call)-[:HAS_INTENT]->(i:Intent) RETURN i.name AS intent, count(c) AS calls ORDER BY calls DESC LIMIT $limit"
+    params: {limit: 3}
+  - question: "Which issues most often end with an angry customer?"
+    cypher: "MATCH (c:Call)-[:HAS_ISSUE]->(i:Issue), (c)-[:ENDED_IN]->(e:Emotion {name: $emotion}) RETURN i.name AS issue, count(c) AS calls ORDER BY calls DESC LIMIT $limit"
+    params: {emotion: "angry_frustrated", limit: 5}
+  - question: "How was the issue 'card not working' usually resolved?"
+    cypher: "MATCH (i:Issue {name: $issue})<-[:HAS_ISSUE]-(c:Call)-[:TOOK_ACTION]->(a:Action) RETURN a.name AS action, count(DISTINCT c) AS times ORDER BY times DESC LIMIT $limit"
+    params: {issue: "card not working", limit: 5}
+max_context_chars: 3000
+warmup_query: warm up

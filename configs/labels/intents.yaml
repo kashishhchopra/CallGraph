@@ -1,0 +1,148 @@
+shared_labels:
+- billing
+- refund
+- account_access
+- order_status
+- booking
+- technical_issue
+- complaint
+- cancellation
+- product_info
+- other
+datasets:
+  abcd:
+    key: flow/subflow
+    flows:
+      account_access:
+        '*': account_access
+      manage_account:
+        manage_change_address: account_access
+        manage_change_name: account_access
+        manage_change_phone: account_access
+        manage_payment_method: billing
+        status_credit_missing: billing
+        status_service_added: billing
+        status_service_removed: billing
+        status_shipping_question: order_status
+      order_issue:
+        manage_cancel: cancellation
+        manage_create: booking
+        manage_downgrade: other
+        manage_upgrade: other
+        status_delivery_date: order_status
+        status_delivery_time: order_status
+        status_mystery_fee: billing
+        status_payment_method: billing
+        status_quantity: order_status
+      product_defect:
+        '*': refund
+      purchase_dispute:
+        bad_price_competitor: complaint
+        bad_price_yesterday: complaint
+        mistimed_billing_already_returned: complaint
+        mistimed_billing_never_bought: complaint
+        out_of_stock_general: order_status
+        out_of_stock_one_item: order_status
+        promo_code_invalid: billing
+        promo_code_out_of_date: billing
+      shipping_issue:
+        cost: billing
+        '*': order_status
+      single_item_query:
+        '*': product_info
+      storewide_query:
+        '*': product_info
+      subscription_inquiry:
+        status_questions: product_info
+        '*': billing
+      troubleshoot_site:
+        '*': technical_issue
+  banking77:
+    card_payment_fee_charged: billing
+    cash_withdrawal_charge: billing
+    exchange_charge: billing
+    extra_charge_on_statement: billing
+    transfer_fee_charged: billing
+    top_up_by_bank_transfer_charge: billing
+    top_up_by_card_charge: billing
+    transaction_charged_twice: billing
+    card_payment_wrong_exchange_rate: billing
+    wrong_exchange_rate_for_cash_withdrawal: billing
+    direct_debit_payment_not_recognised: billing
+    card_payment_not_recognised: billing
+    cash_withdrawal_not_recognised: billing
+    wrong_amount_of_cash_received: billing
+    balance_not_updated_after_bank_transfer: billing
+    balance_not_updated_after_cheque_or_cash_deposit: billing
+    exchange_rate: billing
+    Refund_not_showing_up: refund
+    request_refund: refund
+    reverted_card_payment?: refund
+    top_up_reverted: refund
+    passcode_forgotten: account_access
+    pin_blocked: account_access
+    change_pin: account_access
+    verify_my_identity: account_access
+    unable_to_verify_identity: account_access
+    why_verify_identity: account_access
+    verify_source_of_funds: account_access
+    verify_top_up: account_access
+    edit_personal_details: account_access
+    activate_my_card: account_access
+    lost_or_stolen_phone: account_access
+    lost_or_stolen_card: account_access
+    compromised_card: account_access
+    card_arrival: order_status
+    card_delivery_estimate: order_status
+    pending_card_payment: order_status
+    pending_cash_withdrawal: order_status
+    pending_top_up: order_status
+    pending_transfer: order_status
+    transfer_not_received_by_recipient: order_status
+    transfer_timing: order_status
+    receiving_money: order_status
+    transfer_into_account: order_status
+    card_not_working: technical_issue
+    contactless_not_working: technical_issue
+    virtual_card_not_working: technical_issue
+    declined_card_payment: technical_issue
+    declined_cash_withdrawal: technical_issue
+    declined_transfer: technical_issue
+    failed_transfer: technical_issue
+    top_up_failed: technical_issue
+    atm_support: technical_issue
+    card_swallowed: technical_issue
+    apple_pay_or_google_pay: technical_issue
+    card_linking: technical_issue
+    beneficiary_not_allowed: technical_issue
+    cancel_transfer: cancellation
+    terminate_account: cancellation
+    age_limit: product_info
+    card_acceptance: product_info
+    country_support: product_info
+    fiat_currency_support: product_info
+    supported_cards_and_currencies: product_info
+    visa_or_mastercard: product_info
+    exchange_via_app: product_info
+    card_about_to_expire: product_info
+    disposable_card_limits: product_info
+    top_up_limits: product_info
+    topping_up_by_card: product_info
+    top_up_by_cash_or_cheque: product_info
+    automatic_top_up: product_info
+    get_physical_card: product_info
+    order_physical_card: product_info
+    get_disposable_virtual_card: product_info
+    getting_spare_card: product_info
+    getting_virtual_card: product_info
+  spokenwoz:
+    attraction: product_info
+    hospital: other
+    hotel: booking
+    police: other
+    restaurant: booking
+    taxi: booking
+    train: booking
+    profile: account_access
+  unidata:
+    _note: UniData 'Category' is an industry, not an intent; intent is compared against silver labels instead

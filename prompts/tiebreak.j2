@@ -1,0 +1,11 @@
+Two annotators disagree on a label. Decide the correct one.
+
+Task: {{ task }}
+Context:
+{{ context }}
+
+Annotator A said: {{ a }}
+Annotator B said: {{ b }}
+Allowed values: {{ allowed | join(', ') }}
+
+Return ONLY JSON: {"label": "<allowed value>"}

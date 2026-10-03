@@ -1,0 +1,86 @@
+pages:
+  - {id: upload, title: "Upload & process"}
+  - {id: viewer, title: "Call viewer"}
+  - {id: analytics, title: "Analytics"}
+  - {id: graph, title: "Graph explorer"}
+  - {id: ask, title: "Ask CallGraph"}
+speaker_colors: {agent: "#2a6fdb", customer: "#d9534f"}
+charts:
+  - {id: intent_distribution, title: "Intent distribution", metric: intent_distribution, kind: bar}
+  - {id: emotion_by_intent, title: "Emotion by intent", metric: emotion_by_intent, kind: stacked_bar}
+  - {id: frustration_by_issue, title: "Average frustration by issue", metric: frustration_by_issue, kind: bar}
+  - {id: talk_ratio_vs_outcome, title: "Talk ratio vs outcome", metric: talk_ratio_vs_outcome, kind: bar}
+  - {id: compliance_pass_rates, title: "Compliance pass rates", metric: compliance_pass_rates, kind: bar}
+example_questions:
+  - "What are the most common reasons customers contact us?"
+  - "Which issues most often end with negative emotion?"
+  - "How are refund requests usually resolved?"
+  - "Where are agents missing required compliance steps?"
+poll_interval_s: 2
+request_timeout_s: 600
+cypher_toggle_label: "Show generated Cypher"
+graph_explorer: {height_px: 650, node_colors: {Issue: "#d9534f", Action: "#2a6fdb", Outcome: "#2e9e5b"}}
+public_api_url: http://localhost:8010
+chart_palette: ["#213c31", "#3d6b55", "#8fb89f", "#d0f17e", "#e8895f", "#8f7fd1", "#6b83c9"]
+emotion_colors: {angry_frustrated: "#d9534f", sad: "#7b5cc4", neutral: "#5b6770", happy: "#2e9e5b", other: "#e8a33d"}
+transcript_height_px: 420
+max_call_list: 100
+player_extra_px: 80
+graph_extra_px: 40
+metric_columns: 3
+layout_ratio: [3, 2]
+workspace: {name: "Northstar CX", plan: "Academic workspace", initial: "N"}
+user: {name: "Alex", initials: "AR"}
+recent_calls: 6
+overview_ranges_days: [7, 30, 90]
+default_range_days: 30
+default_strategy: hybrid
+nav:
+  main:
+    - {id: overview, title: "Overview", icon: grid}
+    - {id: upload, title: "Upload & process", icon: upload}
+    - {id: calls, title: "Calls", icon: headset}
+    - {id: analytics, title: "Analytics", icon: chart}
+    - {id: graph, title: "Graph explorer", icon: graph}
+    - {id: ask, title: "Ask CallGraph", icon: chat, badge: "AI"}
+  footer:
+    - {id: help, title: "Help center", icon: help}
+    - {id: settings, title: "Settings", icon: settings}
+analytics_cards:
+  - {metric: intent_distribution, title: "Intent mix", subtitle: "Reasons customers contact your team", kind: hbar}
+  - {metric: emotion_by_intent, title: "Emotion by intent", subtitle: "Sentiment patterns by call reason", kind: stacked}
+  - {metric: frustration_by_issue, title: "Frustration by issue", subtitle: "Average customer frustration score", kind: hbar}
+  - {metric: talk_ratio_vs_outcome, title: "Talk ratio vs outcome", subtitle: "Conversation balance and resolution", kind: hbar, format: percent}
+  - {metric: compliance_pass_rates, title: "Compliance pass rate", subtitle: "Performance against rubric items", kind: hbar, format: percent}
+  - {metric: dynamics, title: "Dynamics", subtitle: "Interruptions, silence, and pace", kind: hbar}
+graph_views:
+  - {id: issues_actions_outcomes, title: "Issues \u2192 Actions \u2192 Outcomes"}
+node_colors: {Call: "#213c31", Issue: "#e8895f", Action: "#6b83c9", Outcome: "#8f7fd1"}
+page_size: 10
+search_debounce_ms: 250
+composer_max_px: 120
+health_poll_s: 15
+pipeline_steps:
+  - {title: "Transcribe", text: "Word-level timestamps and speaker diarization"}
+  - {title: "Understand", text: "Intent, emotion, dynamics, and compliance"}
+  - {title: "Connect", text: "Entities and relationships written to the graph"}
+help_topics:
+  - {title: "Upload a call", text: "Open Upload & process, drop in a recording (WAV, MP3, FLAC, M4A or OGG) and watch each pipeline stage complete. Stereo recordings with one speaker per channel are transcribed per channel."}
+  - {title: "Read a call", text: "Calls lists every processed conversation. Open one to play the audio with a synced transcript, see the emotion timeline, compliance checks, dynamics and summary."}
+  - {title: "Ask questions", text: "Ask CallGraph answers in plain English. Vector searches transcripts, Graph writes a Cypher query over the knowledge graph, and Hybrid combines both. Expand an answer to see the generated Cypher."}
+  - {title: "Privacy", text: "Phone numbers, emails, card numbers and names are redacted before anything is stored. The system assists supervisors and does not make decisions about agents."}
+dynamics_labels:
+  agent_talk_ratio: "Agent talk ratio"
+  customer_talk_ratio: "Customer talk ratio"
+  interruptions: "Interruptions"
+  overlap_time_s: "Overlap time (s)"
+  long_silences: "Long silences"
+  dead_air_total_s: "Dead air (s)"
+  agent_wpm: "Agent words / min"
+  customer_wpm: "Customer words / min"
+  num_turns: "Turns"
+  avg_turn_len_s: "Average turn (s)"
+  hold_periods: "Hold periods"
+  wait_time_s: "Wait time (s)"
+ask_timeout_s: 300
+ask_progress_text: "Searching the call graph and transcripts"

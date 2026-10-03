@@ -1,0 +1,17 @@
+Answer the question about call-center calls using ONLY the evidence below. Cite a call ID in square brackets, e.g. [CA123], ONLY when that exact ID appears in the evidence below; aggregate counts need no citation. If the evidence is insufficient, say so.
+
+Question: {{ question }}
+
+{% if rows %}
+Graph query results:
+{{ rows }}
+
+{% endif %}
+{% if snippets %}
+Transcript snippets:
+{% for s in snippets %}
+[{{ s.call_id }}] {{ s.text }}
+{% endfor %}
+{% endif %}
+
+Answer concisely.
